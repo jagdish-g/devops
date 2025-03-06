@@ -20,11 +20,11 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y cppcheck clang-tidy
-          sudo apt-get install build-essential
 
       - name: Run Cppcheck
         run: |
-          cppcheck --enable=all --inconclusive --quiet --error-exitcode=1 src/
+          cppcheck --enable=all --inconclusive --quiet --error-exitcode=1 --suppress=missingIncludeSystem src/
+
 
       - name: Run Clang-Tidy
         run: |
