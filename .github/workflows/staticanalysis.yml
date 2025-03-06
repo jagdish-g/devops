@@ -20,6 +20,7 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y cppcheck clang-tidy
+          sudo apt-get install build-essential
 
       - name: Run Cppcheck
         run: |
