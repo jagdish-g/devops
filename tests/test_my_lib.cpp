@@ -4,6 +4,7 @@
 TEST(Mylibtest, addfunction)
 {
 	EXPECT_EQ(add(2,3),5);
+	EXPECT_EQ(add(3,3),6);
 }
 
 TEST(Mylibtest, addFailfunction)
