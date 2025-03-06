@@ -9,7 +9,7 @@ TEST(Mylibtest, addfunction)
 
 TEST(Mylibtest, addFailfunction)
 {
-	EXPECT_EQ(add(2,3),65);
+	EXPECT_EQ(add(4,3),7);
 }
 
 int main(int argc,char **argv)
