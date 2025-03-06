@@ -1,0 +1,51 @@
+name: Embedded C CI/CD with Docker
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Build Docker Image
+        run: docker build -t embedded-ci .
+
+      - name: Build Embedded C Project inside Docker
+        run: |
+          docker run --rm -v "$(pwd):/workspace" -w /workspace embedded-ci bash -c "
+            mkdir -p build && cd build &&
+            cmake .. &&
+            make
+          "
+
+      - name: Run Static Analysis
+        run: |
+          docker run --rm -v "$(pwd):/workspace" -w /workspace embedded-ci bash -c "
+            cppcheck --enable=all --inconclusive --quiet --error-exitcode=1 src/
+            clang-tidy src/*.cpp -- -Iinclude
+          "
+
+      - name: Run Unit Tests
+        run: |
+          docker run --rm -v "$(pwd):/workspace" -w /workspace embedded-ci bash -c "
+            cd build &&
+            ctest --output-on-failure
+          "
+
+      - name: Generate Code Coverage
+        run: |
+          docker run --rm -v "$(pwd):/workspace" -w /workspace embedded-ci bash -c "
+            cd build &&
+            lcov --capture --directory . --output-file coverage.info &&
+            lcov --list coverage.info
+          "
+
