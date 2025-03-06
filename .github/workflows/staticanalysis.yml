@@ -1,0 +1,42 @@
+name: Static Analysis for C/C++ Code
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  static-analysis:
+    runs-on: ubuntu-latest  # Uses Ubuntu as the CI runner
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Static Analysis Tools
+        run: |
+          sudo apt update
+          sudo apt install -y cppcheck clang-tidy
+
+      - name: Run Cppcheck
+        run: |
+          cppcheck --enable=all --inconclusive --quiet --error-exitcode=1 src/
+
+      - name: Run Clang-Tidy
+        run: |
+          clang-tidy src/*.cpp -- -Iinclude
+
+      - name: Run SonarQube Analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          sonar-scanner \
+            -Dsonar.projectKey=my_project \
+            -Dsonar.organization=my_org \
+            -Dsonar.sources=src \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=$SONAR_TOKEN
+
