@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/jagan/Cmake_example_basic/Gitworkspace/devops/devops/src/main.cpp
+iostream
+-
+my_lib.h
+/home/jagan/Cmake_example_basic/Gitworkspace/devops/devops/src/my_lib.h
+
+/home/jagan/Cmake_example_basic/Gitworkspace/devops/devops/src/my_lib.h
+
