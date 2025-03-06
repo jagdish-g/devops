@@ -30,7 +30,7 @@ jobs:
       - name: Run Static Analysis
         run: |
           docker run --rm -v "$(pwd):/workspace" -w /workspace embedded-ci bash -c "
-            cppcheck --enable=all --inconclusive --quiet --error-exitcode=1 src/
+            cppcheck --enable=all --inconclusive --quiet --error-exitcode=1 --suppress=missingIncludeSystem src/
             clang-tidy src/*.cpp -- -Iinclude
           "
 
